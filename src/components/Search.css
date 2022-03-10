@@ -1,8 +1,0 @@
-.categories-container {
-  align-items: flex-start;
-  border: 1px solid black;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 300px;
-}
