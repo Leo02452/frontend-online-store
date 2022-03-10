@@ -1,7 +1,7 @@
 import React from 'react';
 import { getCategories } from '../services/api';
 import CategorieButton from './CategorieButton';
-// import './Search.css';
+import './Search.css';
 
 export default class Search extends React.Component {
   constructor() {
