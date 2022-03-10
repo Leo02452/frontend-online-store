@@ -1,15 +1,30 @@
 import React from 'react';
-import { getProductsFromCategoryAndQuery } from '../services/api';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
+import CategorieButton from './CategorieButton';
+import './Search.css';
 
 export default class Search extends React.Component {
   constructor() {
     super();
-
     this.state = {
+      categories: [],
+      loading: false,
       keyboard: '',
       product: [],
       h2: true,
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      loading: true,
+    }, async () => {
+      const result = await getCategories();
+      this.setState({
+        categories: result,
+        loading: false,
+      });
+    });
   }
 
   handleChange = ({ target }) => {
@@ -40,24 +55,23 @@ export default class Search extends React.Component {
   }
 
   render() {
-    const { keyboard, product } = this.state;
+    const { categories, loading, keyboard, product } = this.state;
     console.log(keyboard);
     return (
       <div>
-        <form>
-          <input
-            type="text"
-            data-testid="query-input"
-            onChange={ this.handleChange }
-          />
-          <button
-            type="button"
-            onClick={ this.handleClick }
-            data-testid="query-button"
-          >
-            Buscar
-          </button>
-        </form>
+        <input
+          type="text"
+          data-testid="query-input"
+          onChange={ this.handleChange }
+        />
+        <button
+          type="button"
+          onClick={ this.handleClick }
+          data-testid="query-button"
+        >
+          Buscar
+        </button>
+
         { this.condition() }
         {
           product.length > 0
@@ -75,6 +89,17 @@ export default class Search extends React.Component {
             ))
             : <p>Nenhum produto foi encontrado</p>
         }
+        <nav className="categories-container">
+          {
+            loading === true ? <p>Carregando...</p>
+              : categories.map((categorie) => (
+                <CategorieButton
+                  key={ categorie.id }
+                  name={ categorie.name }
+                  id={ categorie.id }
+                />))
+          }
+        </nav>
       </div>
     );
   }
