@@ -15,6 +15,18 @@ export default class Search extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.setState({
+      loading: true,
+    }, async () => {
+      const result = await getCategories();
+      this.setState({
+        categories: result,
+        loading: false,
+      });
+    });
+  }
+  
   handleChange = ({ target }) => {
     const { value } = target;
     this.setState({ keyboard: value });
@@ -42,20 +54,8 @@ export default class Search extends React.Component {
     return null;
   }
 
-  componentDidMount() {
-    this.setState({
-      loading: true,
-    }, async () => {
-      const result = await getCategories();
-      this.setState({
-        categories: result,
-        loading: false,
-      });
-    });
-  }
-
   render() {
-    const { categories, loading, keyboard, product } = this.state;
+    const { categories, loading, product } = this.state;
     return (
       <div>
         <form>
