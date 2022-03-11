@@ -3,7 +3,6 @@ import { getCategories, getProductsFromCategoryAndQuery } from '../services/api'
 import CategorieButton from './CategorieButton';
 import './Search.css';
 
-
 export default class Search extends React.Component {
   constructor() {
     super();
@@ -11,7 +10,21 @@ export default class Search extends React.Component {
       keyboard: '',
       product: [],
       h2: true,
+      categories: [],
+      loading: false,
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      loading: true,
+    }, async () => {
+      const result = await getCategories();
+      this.setState({
+        categories: result,
+        loading: false,
+      });
+    });
   }
 
   handleChange = ({ target }) => {
@@ -42,27 +55,7 @@ export default class Search extends React.Component {
   }
 
   render() {
-    const { keyboard, product } = this.state;
-    this.state = {
-      categories: [],
-      loading: false,
-    };
-  }
-
-  componentDidMount() {
-    this.setState({
-      loading: true,
-    }, async () => {
-      const result = await getCategories();
-      this.setState({
-        categories: result,
-        loading: false,
-      });
-    });
-  }
-
-  render() {
-    const { categories, loading } = this.state;
+    const { categories, loading, product } = this.state;
     return (
       <div>
         <form>
