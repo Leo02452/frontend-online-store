@@ -10,10 +10,9 @@ export default class Search extends React.Component {
             type="text"
           />
         </form>
-        <Link data-testid="shopping-cart-button" to="/shopping-cart">CARR</Link>
+        <Link data-testid="shopping-cart-button" to="/shopping-cart">Carrinho</Link>
         <h2 data-testid="home-initial-message">
-          Digite
-          algum termo de pesquisa ou escolha uma categoria.
+          Digite algum termo de pesquisa ou escolha uma categoria.
         </h2>
       </div>
     );
