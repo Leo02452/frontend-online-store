@@ -26,7 +26,7 @@ export default class Search extends React.Component {
       });
     });
   }
-  
+
   handleChange = ({ target }) => {
     const { value } = target;
     this.setState({ keyboard: value });
