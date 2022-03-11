@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 import CategorieButton from './CategorieButton';
 import './Search.css';
@@ -72,6 +73,7 @@ export default class Search extends React.Component {
             Buscar
           </button>
         </form>
+        <Link data-testid="shopping-cart-button" to="/shopping-cart">Carrinho</Link>
         { this.condition() }
         {
           product.length > 0
@@ -90,8 +92,7 @@ export default class Search extends React.Component {
             : <p>Nenhum produto foi encontrado</p>
         }
         <h2 data-testid="home-initial-message">
-          Digite
-          algum termo de pesquisa ou escolha uma categoria.
+          Digite algum termo de pesquisa ou escolha uma categoria.
         </h2>
         <nav className="categories-container">
           {
