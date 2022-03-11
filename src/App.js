@@ -1,9 +1,8 @@
 import React from 'react';
 import './App.css';
-import { Route } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import Search from './components/Search';
 import ShoppingCart from './components/ShoppingCart';
-import { BrowserRouter } from 'react-router-dom';
 
 function App() {
   return (
