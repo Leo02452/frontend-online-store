@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Route, Switch, BrowserRouter } from 'react-router-dom';
+
 import Search from './components/Search';
 
 function App() {
@@ -8,7 +9,9 @@ function App() {
     <div className="App">
       <main>
         <BrowserRouter>
-          <Route path="/" component={ Search } exact />
+          <Switch>
+            <Route path="/" component={ Search } exact />
+          </Switch>
         </BrowserRouter>
       </main>
     </div>
