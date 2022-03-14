@@ -1,22 +1,52 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import Search from './components/Search';
 import ShoppingCart from './components/ShoppingCart';
 
-function App() {
-  return (
-    <div className="App">
-      <main>
-        <BrowserRouter>
-          <Switch>
-            <Route path="/shopping-cart" component={ ShoppingCart } />
-            <Route path="/" component={ Search } exact />
-          </Switch>
-        </BrowserRouter>
-      </main>
-    </div>
-  );
-}
+export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      cartList: [],
+    };
+  }
 
-export default App;
+  addToCart = ({ target }) => {
+    const add = target.value;
+    this.setState((prevState) => ({
+      cartList: [...prevState.cartList, add],
+    }));
+  }
+
+  render() {
+    const { cartList } = this.state;
+    return (
+      <div className="App">
+        <main>
+          <BrowserRouter>
+            <Switch>
+              <Route
+                path="/shopping-cart"
+                render={ (props) => (
+                  <ShoppingCart
+                    { ...props }
+                    cartList={ cartList }
+                  />) }
+              />
+              <Route
+                path="/"
+                exact
+                render={ (props) => (
+                  <Search
+                    { ...props }
+                    addToCart={ this.addToCart }
+                  />) }
+              />
+            </Switch>
+          </BrowserRouter>
+        </main>
+      </div>
+    );
+  }
+}
