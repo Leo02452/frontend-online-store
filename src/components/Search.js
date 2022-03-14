@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 import CategorieButton from './CategorieButton';
@@ -36,9 +37,7 @@ export default class Search extends React.Component {
   handleClick = async ({ target }) => {
     const { keyboard } = this.state;
     const request = await getProductsFromCategoryAndQuery(target.id, keyboard);
-    console.log(request);
     const { results } = request;
-    console.log(results);
     this.setState({ product: results }, () => {
       this.setState({ h2: false });
     });
@@ -59,6 +58,7 @@ export default class Search extends React.Component {
 
   render() {
     const { categories, loading, product } = this.state;
+    const { addToCart } = this.props;
     return (
       <div>
         <form>
@@ -75,7 +75,12 @@ export default class Search extends React.Component {
             Buscar
           </button>
         </form>
-        <Link data-testid="shopping-cart-button" to="/shopping-cart">Carrinho</Link>
+        <Link
+          data-testid="shopping-cart-button"
+          to="/shopping-cart"
+        >
+          Carrinho
+        </Link>
         { this.condition() }
         {
           product.length > 0
@@ -89,6 +94,15 @@ export default class Search extends React.Component {
                 </figure>
                 <p>{ produto.title }</p>
                 <p>{ `R$${produto.price}` }</p>
+                <button
+                  data-testid="product-add-to-cart"
+                  type="button"
+                  value={ produto.title }
+                  onClick={ addToCart }
+
+                >
+                  Adicionar ao carrinho
+                </button>
               </div>
             ))
             : <p>Nenhum produto foi encontrado</p>
@@ -112,3 +126,7 @@ export default class Search extends React.Component {
     );
   }
 }
+
+Search.propTypes = {
+  addToCart: PropTypes.func.isRequired,
+};
