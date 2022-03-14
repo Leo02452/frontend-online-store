@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class CategorieButton extends Component {
+export default class CategorieButton extends React.Component {
   render() {
     const { name, id, handleClick } = this.props;
     return (

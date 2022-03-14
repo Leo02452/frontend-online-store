@@ -11,13 +11,13 @@ export default class Search extends React.Component {
     this.state = {
       keyboard: '',
       product: [],
-      h2: true,
       categories: [],
       loading: false,
+      textInput: true,
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.setState({
       loading: true,
     }, async () => {
@@ -39,13 +39,20 @@ export default class Search extends React.Component {
     const request = await getProductsFromCategoryAndQuery(target.id, keyboard);
     const { results } = request;
     this.setState({ product: results }, () => {
-      this.setState({ h2: false });
+      this.setState({ textInput: false });
+    });
+  }
+
+  handleCategoryValue = ({ target }) => {
+    console.log(target.value);
+    this.setState({
+      keyboard: target.id,
     });
   }
 
   condition = () => {
-    const { h2 } = this.state;
-    if (h2) {
+    const { textInput } = this.state;
+    if (textInput) {
       return (
         <h2 data-testid="home-initial-message">
           Digite
@@ -57,7 +64,7 @@ export default class Search extends React.Component {
   }
 
   render() {
-    const { categories, loading, product } = this.state;
+    const { categories, loading, product, keyboard } = this.state;
     const { addToCart } = this.props;
     return (
       <div>
@@ -85,15 +92,23 @@ export default class Search extends React.Component {
         {
           product.length > 0
             ? product.map((produto, index) => (
-              <div key={ index } data-testid="product">
-                <figure key={ produto.category_id }>
-                  <img
-                    src={ produto.thumbnail }
-                    alt={ produto.title }
-                  />
-                </figure>
-                <p>{ produto.title }</p>
-                <p>{ `R$${produto.price}` }</p>
+              <div key={ produto.id }>
+                <Link
+                  to={ `/product/${produto.id}` }
+                  key={ index }
+                  data-testid="product-detail-link"
+                >
+                  <figure data-testid="product">
+                    <img
+                      id={ produto.id }
+                      src={ produto.thumbnail }
+                      alt={ produto.title }
+                      role="presentation"
+                    />
+                  </figure>
+                  <p data-testid="product-detail-name">{ produto.title }</p>
+                  <p>{ `R$${produto.price}` }</p>
+                </Link>
                 <button
                   data-testid="product-add-to-cart"
                   type="button"
@@ -104,12 +119,18 @@ export default class Search extends React.Component {
                   Adicionar ao carrinho
                 </button>
               </div>
+
             ))
-            : <p>Nenhum produto foi encontrado</p>
+            : (
+              <>
+                <Link
+                  to={ `/product/${keyboard}` }
+                  data-testid="product-detail-link"
+                />
+                <p>Nenhum produto foi encontrado</p>
+              </>
+            )
         }
-        <h2 data-testid="home-initial-message">
-          Digite algum termo de pesquisa ou escolha uma categoria.
-        </h2>
         <form className="categories-container">
           {
             loading === true ? <p>Carregando...</p>
@@ -119,7 +140,8 @@ export default class Search extends React.Component {
                   name={ categorie.name }
                   id={ categorie.id }
                   handleClick={ this.handleClick }
-                />))
+                />
+              ))
           }
         </form>
       </div>
