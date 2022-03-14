@@ -33,10 +33,12 @@ export default class Search extends React.Component {
     this.setState({ keyboard: value });
   }
 
-  handleClick = async () => {
+  handleClick = async ({ target }) => {
     const { keyboard } = this.state;
-    const request = await getProductsFromCategoryAndQuery(keyboard, keyboard);
+    const request = await getProductsFromCategoryAndQuery(target.id, keyboard);
+    console.log(request);
     const { results } = request;
+    console.log(results);
     this.setState({ product: results }, () => {
       this.setState({ h2: false });
     });
@@ -94,7 +96,7 @@ export default class Search extends React.Component {
         <h2 data-testid="home-initial-message">
           Digite algum termo de pesquisa ou escolha uma categoria.
         </h2>
-        <nav className="categories-container">
+        <form className="categories-container">
           {
             loading === true ? <p>Carregando...</p>
               : categories.map((categorie) => (
@@ -102,9 +104,10 @@ export default class Search extends React.Component {
                   key={ categorie.id }
                   name={ categorie.name }
                   id={ categorie.id }
+                  handleClick={ this.handleClick }
                 />))
           }
-        </nav>
+        </form>
       </div>
     );
   }
