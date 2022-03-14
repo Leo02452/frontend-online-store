@@ -13,9 +13,13 @@ export default class App extends Component {
   }
 
   addToCart = ({ target }) => {
-    const add = target.value;
+    const title = target.value;
+    const obj = {
+      title,
+      count: 1,
+    };
     this.setState((prevState) => ({
-      cartList: [...prevState.cartList, add],
+      cartList: [...prevState.cartList, obj],
     }));
   }
 
