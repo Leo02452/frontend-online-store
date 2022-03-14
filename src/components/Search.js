@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 import CategorieButton from './CategorieButton';
 import './Search.css';
@@ -8,6 +8,9 @@ export default class Search extends React.Component {
   constructor() {
     super();
     this.state = {
+      keyboard: '',
+      product: [],
+      h2: true,
       categories: [],
       loading: false,
       keyboard: '',
@@ -81,24 +84,24 @@ export default class Search extends React.Component {
   }
 
   render() {
-    const { categories, loading, product, keyboard } = this.state;
+    const { categories, loading, product } = this.state;
     return (
       <div>
-        <Link data-testid="shopping-cart-button" to="/cart">
-          <button type="button">Carrinho...</button>
-        </Link>
-        <input
-          type="text"
-          data-testid="query-input"
-          onChange={ this.handleChange }
-        />
-        <button
-          type="button"
-          onClick={ this.handleClick }
-          data-testid="query-button"
-        >
-          Buscar
-        </button>
+        <form>
+          <input
+            type="text"
+            data-testid="query-input"
+            onChange={ this.handleChange }
+          />
+          <button
+            type="button"
+            onClick={ this.handleClick }
+            data-testid="query-button"
+          >
+            Buscar
+          </button>
+        </form>
+        <Link data-testid="shopping-cart-button" to="/shopping-cart">Carrinho</Link>
         { this.condition() }
         {
           product.length > 0
@@ -131,20 +134,20 @@ export default class Search extends React.Component {
               </>
             )
         }
+        <h2 data-testid="home-initial-message">
+          Digite algum termo de pesquisa ou escolha uma categoria.
+        </h2>
         <nav className="categories-container">
           {
             loading === true ? <p>Carregando...</p>
-              : categories.map((categorie, index) => (
-                (index >= 0) ? <CategorieButton
+              : categories.map((categorie) => (
+                <CategorieButton
                   key={ categorie.id }
                   name={ categorie.name }
                   id={ categorie.id }
-                  call={ this.handleCategoryValue }
-                /> : null
-              ))
+                />))
           }
         </nav>
-        { this.redirection() }
       </div>
     );
   }
