@@ -1,58 +1,57 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { getProductsFromCategoryAndQuery } from '../services/api';
+import { Link } from 'react-router-dom';
+import { getProductId } from '../services/api';
 
 class ProductDetails extends React.Component {
   constructor() {
     super();
-
     this.state = {
-      test: [],
+      test: {},
+      load: false,
     };
   }
 
   async componentDidMount() {
-    const { name } = this.props;
-    const request = await getProductsFromCategoryAndQuery(name, name);
-    this.setState({ test: request.results });
+    const { match: { params: { id } } } = this.props;
+    this.setState({ load: true });
+    const request = await getProductId(id);
+    this.setState({ test: request, load: false });
   }
 
   render() {
-    const { id } = this.props;
-    console.log(id);
-    const { test } = this.state;
-    console.log(test);
+    const { test, load } = this.state;
     return (
-      <>
+      <div>
         {
-          test.map((testes, index) => (
-            testes.id === id
-              ? (
-                <div key={ index }>
-                  <img alt=":D" src={ testes.thumbnail } />
-                  <p data-testid="product-detail-name">{ testes.title }</p>
-                  <p>{ `R$${testes.price}` }</p>
-                  <p>{ testes.listing_type_id }</p>
-                  <Link to="/">
-                    <button type="button">Voltar</button>
-                  </Link>
-                  <Link data-testid="shopping-cart-button" to="/cart">
-                    <button type="button">Carrinho...</button>
-                  </Link>
-                </div>
-              )
-              : null
-          ))
+          load
+            ? <p>Loading...</p>
+            : (
+              <div>
+                <p data-testid="product-detail-name">{ test.title }</p>
+                <img
+                  src={ test.thumbnail }
+                  alt={ test.title }
+                />
+                <p>{ `R$${test.price}` }</p>
+                <p>{ test.listing_type_id }</p>
+              </div>
+            )
         }
-      </>
+        <Link to="/shopping-cart">
+          <button type="button">Carrinho</button>
+        </Link>
+      </div>
     );
   }
 }
 
 ProductDetails.propTypes = {
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
 };
 
 export default ProductDetails;

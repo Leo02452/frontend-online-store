@@ -10,19 +10,13 @@ export default class Search extends React.Component {
     this.state = {
       keyboard: '',
       product: [],
-      h2: true,
       categories: [],
       loading: false,
-      keyboard: '',
-      product: [],
-      product2: {},
       textInput: true,
-      redirect: false,
     };
   }
 
   async componentDidMount() {
-    getCategories();
     this.setState({
       loading: true,
     }, async () => {
@@ -39,24 +33,9 @@ export default class Search extends React.Component {
     this.setState({ keyboard: value });
   }
 
-  redirection = () => {
-    const { product2, redirect } = this.state;
-    if (redirect) {
-      return (
-        <div>
-          <img alt="nada" src={ product2.thumbnail } />
-          <p>{ product2.title }</p>
-          <p>{ `R$${product2.price}` }</p>
-          <p>{ product2.listing_type_id }</p>
-          <Redirect to="/product" />
-        </div>
-      );
-    }
-  }
-
-  handleClick = async () => {
+  handleClick = async ({ target }) => {
     const { keyboard } = this.state;
-    const request = await getProductsFromCategoryAndQuery(keyboard, keyboard);
+    const request = await getProductsFromCategoryAndQuery(target.id, keyboard);
     const { results } = request;
     this.setState({ product: results }, () => {
       this.setState({ textInput: false });
@@ -84,7 +63,7 @@ export default class Search extends React.Component {
   }
 
   render() {
-    const { categories, loading, product } = this.state;
+    const { categories, loading, product, keyboard } = this.state;
     return (
       <div>
         <form>
@@ -107,11 +86,11 @@ export default class Search extends React.Component {
           product.length > 0
             ? product.map((produto, index) => (
               <Link
-                to={ `/product/${produto.id}/${keyboard}` }
+                to={ `/product/${produto.id}` }
                 key={ index }
                 data-testid="product-detail-link"
               >
-                <figure>
+                <figure data-testid="product">
                   <img
                     id={ produto.id }
                     src={ produto.thumbnail }
@@ -119,7 +98,7 @@ export default class Search extends React.Component {
                     role="presentation"
                   />
                 </figure>
-                <p>{ produto.title }</p>
+                <p data-testid="product-detail-name">{ produto.title }</p>
                 <p>{ `R$${produto.price}` }</p>
               </Link>
 
@@ -134,10 +113,7 @@ export default class Search extends React.Component {
               </>
             )
         }
-        <h2 data-testid="home-initial-message">
-          Digite algum termo de pesquisa ou escolha uma categoria.
-        </h2>
-        <nav className="categories-container">
+        <form className="categories-container">
           {
             loading === true ? <p>Carregando...</p>
               : categories.map((categorie) => (
@@ -145,9 +121,11 @@ export default class Search extends React.Component {
                   key={ categorie.id }
                   name={ categorie.name }
                   id={ categorie.id }
-                />))
+                  handleClick={ this.handleClick }
+                />
+              ))
           }
-        </nav>
+        </form>
       </div>
     );
   }
