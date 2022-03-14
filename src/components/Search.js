@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 import CategorieButton from './CategorieButton';
@@ -64,6 +65,7 @@ export default class Search extends React.Component {
 
   render() {
     const { categories, loading, product, keyboard } = this.state;
+    const { addToCart } = this.props;
     return (
       <div>
         <form>
@@ -80,27 +82,43 @@ export default class Search extends React.Component {
             Buscar
           </button>
         </form>
-        <Link data-testid="shopping-cart-button" to="/shopping-cart">Carrinho</Link>
+        <Link
+          data-testid="shopping-cart-button"
+          to="/shopping-cart"
+        >
+          Carrinho
+        </Link>
         { this.condition() }
         {
           product.length > 0
             ? product.map((produto, index) => (
-              <Link
-                to={ `/product/${produto.id}` }
-                key={ index }
-                data-testid="product-detail-link"
-              >
-                <figure data-testid="product">
-                  <img
-                    id={ produto.id }
-                    src={ produto.thumbnail }
-                    alt={ produto.title }
-                    role="presentation"
-                  />
-                </figure>
-                <p data-testid="product-detail-name">{ produto.title }</p>
-                <p>{ `R$${produto.price}` }</p>
-              </Link>
+              <div key={ produto.id }>
+                <Link
+                  to={ `/product/${produto.id}` }
+                  key={ index }
+                  data-testid="product-detail-link"
+                >
+                  <figure data-testid="product">
+                    <img
+                      id={ produto.id }
+                      src={ produto.thumbnail }
+                      alt={ produto.title }
+                      role="presentation"
+                    />
+                  </figure>
+                  <p data-testid="product-detail-name">{ produto.title }</p>
+                  <p>{ `R$${produto.price}` }</p>
+                </Link>
+                <button
+                  data-testid="product-add-to-cart"
+                  type="button"
+                  value={ produto.title }
+                  onClick={ addToCart }
+
+                >
+                  Adicionar ao carrinho
+                </button>
+              </div>
 
             ))
             : (
@@ -130,3 +148,7 @@ export default class Search extends React.Component {
     );
   }
 }
+
+Search.propTypes = {
+  addToCart: PropTypes.func.isRequired,
+};
