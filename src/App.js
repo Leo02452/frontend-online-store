@@ -3,6 +3,7 @@ import './App.css';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import Search from './components/Search';
 import ShoppingCart from './components/ShoppingCart';
+import ProductDetails from './components/ProductDetails';
 
 export default class App extends Component {
   constructor() {
@@ -30,6 +31,10 @@ export default class App extends Component {
         <main>
           <BrowserRouter>
             <Switch>
+              <Route
+                path="/product/:id"
+                render={ (props) => <ProductDetails { ...props } /> }
+              />
               <Route
                 path="/shopping-cart"
                 render={ (props) => (
