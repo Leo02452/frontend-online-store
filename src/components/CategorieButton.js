@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 export default class CategorieButton extends Component {
   render() {
-    const { name, id } = this.props;
+    const { name, id, call } = this.props;
+    /* console.log(id); */
     return (
       <label
         htmlFor={ id }
@@ -11,9 +12,12 @@ export default class CategorieButton extends Component {
       >
         { name }
         <input
+          data-testid="product"
           type="radio"
           id={ id }
-          name={ name }
+          name="opcoes"
+          value={ name }
+          onChange={ call }
         />
       </label>
     );
@@ -23,4 +27,5 @@ export default class CategorieButton extends Component {
 CategorieButton.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  call: PropTypes.func.isRequired,
 };
