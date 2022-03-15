@@ -33,7 +33,10 @@ export default class App extends Component {
             <Switch>
               <Route
                 path="/product/:id"
-                render={ (props) => <ProductDetails { ...props } /> }
+                render={ (props) => (<ProductDetails
+                  { ...props }
+                  addToCart={ this.addToCart }
+                />) }
               />
               <Route
                 path="/shopping-cart"
