@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getProductId } from '../services/api';
+import ProductForm from './ProductForm';
 
 class ProductDetails extends React.Component {
   constructor() {
@@ -52,6 +53,7 @@ class ProductDetails extends React.Component {
           <button data-testid="shopping-cart-button" type="button">Carrinho</button>
           <p data-testid="shopping-cart-size">{ cartList.length }</p>
         </Link>
+        <ProductForm />
       </div>
     );
   }
