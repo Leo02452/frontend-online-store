@@ -13,6 +13,15 @@ export default class App extends Component {
     };
   }
 
+  componentDidMount() {
+    const rec = JSON.parse(localStorage.getItem('qnt'));
+    if (!rec) {
+      this.setState({ cartList: [] });
+    } else {
+      this.setState({ cartList: rec });
+    }
+  }
+
   addToCart = ({ target }) => {
     const title = target.value;
     const obj = {
@@ -21,8 +30,11 @@ export default class App extends Component {
     };
     this.setState((prevState) => ({
       cartList: [...prevState.cartList, obj],
-    }));
-  }
+    }), () => {
+      const { cartList } = this.state;
+      localStorage.setItem('qnt', JSON.stringify(cartList));
+    });
+  };
 
   render() {
     const { cartList } = this.state;
@@ -35,6 +47,7 @@ export default class App extends Component {
                 path="/product/:id"
                 render={ (props) => (<ProductDetails
                   { ...props }
+                  cartList={ cartList }
                   addToCart={ this.addToCart }
                 />) }
               />
@@ -53,6 +66,7 @@ export default class App extends Component {
                   <Search
                     { ...props }
                     addToCart={ this.addToCart }
+                    cartList={ cartList }
                   />) }
               />
             </Switch>
