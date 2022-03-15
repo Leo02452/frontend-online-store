@@ -20,7 +20,7 @@ class ProductDetails extends React.Component {
   }
 
   render() {
-    const { addToCart } = this.props;
+    const { addToCart, cartList } = this.props;
     const { test, load } = this.state;
     return (
       <div>
@@ -50,6 +50,7 @@ class ProductDetails extends React.Component {
         }
         <Link to="/shopping-cart">
           <button data-testid="shopping-cart-button" type="button">Carrinho</button>
+          <p data-testid="shopping-cart-size">{ cartList.length }</p>
         </Link>
       </div>
     );
@@ -63,6 +64,7 @@ ProductDetails.propTypes = {
     }),
   }).isRequired,
   addToCart: PropTypes.func.isRequired,
+  cartList: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export default ProductDetails;
