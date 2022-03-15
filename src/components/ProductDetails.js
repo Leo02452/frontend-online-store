@@ -20,6 +20,7 @@ class ProductDetails extends React.Component {
   }
 
   render() {
+    const { addToCart } = this.props;
     const { test, load } = this.state;
     return (
       <div>
@@ -35,11 +36,20 @@ class ProductDetails extends React.Component {
                 />
                 <p>{ `R$${test.price}` }</p>
                 <p>{ test.listing_type_id }</p>
+                <button
+                  data-testid="product-detail-add-to-cart"
+                  type="button"
+                  value={ test.title }
+                  onClick={ addToCart }
+
+                >
+                  Adicionar ao carrinho
+                </button>
               </div>
             )
         }
         <Link to="/shopping-cart">
-          <button type="button">Carrinho</button>
+          <button data-testid="shopping-cart-button" type="button">Carrinho</button>
         </Link>
       </div>
     );
@@ -52,6 +62,7 @@ ProductDetails.propTypes = {
       id: PropTypes.string.isRequired,
     }),
   }).isRequired,
+  addToCart: PropTypes.func.isRequired,
 };
 
 export default ProductDetails;
