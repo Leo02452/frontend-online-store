@@ -65,7 +65,7 @@ export default class Search extends React.Component {
 
   render() {
     const { categories, loading, product, keyboard } = this.state;
-    const { addToCart } = this.props;
+    const { addToCart, cartList } = this.props;
     return (
       <div>
         <form>
@@ -86,6 +86,7 @@ export default class Search extends React.Component {
           data-testid="shopping-cart-button"
           to="/shopping-cart"
         >
+          <p data-testid="shopping-cart-size">{ cartList.length }</p>
           Carrinho
         </Link>
         { this.condition() }
@@ -114,7 +115,6 @@ export default class Search extends React.Component {
                   type="button"
                   value={ produto.title }
                   onClick={ addToCart }
-
                 >
                   Adicionar ao carrinho
                 </button>
@@ -151,4 +151,5 @@ export default class Search extends React.Component {
 
 Search.propTypes = {
   addToCart: PropTypes.func.isRequired,
+  cartList: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
