@@ -4,6 +4,7 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import Search from './components/Search';
 import ShoppingCart from './components/ShoppingCart';
 import ProductDetails from './components/ProductDetails';
+import Finishing from './components/Finishing';
 
 export default class App extends Component {
   constructor() {
@@ -68,6 +69,10 @@ export default class App extends Component {
                     addToCart={ this.addToCart }
                     cartList={ cartList }
                   />) }
+              />
+              <Route
+                path="/finishing"
+                component={ Finishing }
               />
             </Switch>
           </BrowserRouter>
