@@ -10,6 +10,7 @@ class ProductDetails extends React.Component {
     this.state = {
       test: {},
       load: false,
+      reviews: [],
     };
   }
 
@@ -20,9 +21,18 @@ class ProductDetails extends React.Component {
     this.setState({ test: request, load: false });
   }
 
+  handleSaveReview = (event) => {
+    event.preventDefault();
+    console.log(event);
+  }
+
+  handleChangeInput = () => {
+    
+  }
+
   render() {
     const { addToCart, cartList } = this.props;
-    const { test, load } = this.state;
+    const { test, load, reviews } = this.state;
     return (
       <div>
         {
@@ -53,7 +63,10 @@ class ProductDetails extends React.Component {
           <button data-testid="shopping-cart-button" type="button">Carrinho</button>
           <p data-testid="shopping-cart-size">{ cartList.length }</p>
         </Link>
-        <ProductForm />
+        <ProductForm
+          onClickButton={ this.handleSaveReview }
+          onInputChange={ this.handleChangeInput }
+        />
       </div>
     );
   }
