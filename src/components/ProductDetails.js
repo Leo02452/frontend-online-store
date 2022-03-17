@@ -58,6 +58,7 @@ class ProductDetails extends React.Component {
   render() {
     const { addToCart, cartList } = this.props;
     const { test, load, reviews } = this.state;
+    const isFreeShipping = test.shipping && test.shipping.free_shipping;
     return (
       <div>
         {
@@ -66,6 +67,7 @@ class ProductDetails extends React.Component {
             : (
               <div>
                 <p data-testid="product-detail-name">{ test.title }</p>
+                {isFreeShipping && <p data-testid="free-shipping">Frete Grátis</p>}
                 <img
                   src={ test.thumbnail }
                   alt={ test.title }
