@@ -108,6 +108,8 @@ export default class Search extends React.Component {
                     />
                   </figure>
                   <p data-testid="product-detail-name">{ produto.title }</p>
+                  {produto.shipping.free_shipping
+                  && <p data-testid="free-shipping">Frete Grátis</p>}
                   <p>{ `R$${produto.price}` }</p>
                 </Link>
                 <button
