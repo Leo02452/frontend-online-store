@@ -24,8 +24,8 @@ export default class App extends Component {
   }
 
   addToCart = ({ target }) => {
-    const title = target.value;
-    const qnt = target.name;
+    const title = target.name;
+    const qnt = target.value;
     const obj = {
       title,
       count: 1,
