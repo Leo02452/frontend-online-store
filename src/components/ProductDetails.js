@@ -59,6 +59,7 @@ class ProductDetails extends React.Component {
     const { addToCart, cartList } = this.props;
     const { test, load, reviews } = this.state;
     const isFreeShipping = test.shipping && test.shipping.free_shipping;
+    const count = 7;
     return (
       <div>
         {
@@ -77,7 +78,8 @@ class ProductDetails extends React.Component {
                 <button
                   data-testid="product-detail-add-to-cart"
                   type="button"
-                  value={ test.title }
+                  name={ test.title }
+                  value={ count }
                   onClick={ addToCart }
 
                 >
