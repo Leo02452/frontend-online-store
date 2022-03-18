@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default class Reviews extends React.Component {
+export default class Reviews extends Component {
   render() {
     const { review } = this.props;
     return (

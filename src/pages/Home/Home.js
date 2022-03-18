@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
-import CategorieButton from './CategorieButton';
-import './Search.css';
+import { getCategories, getProductsFromCategoryAndQuery } from '../../services/api';
+import CategorieButton from '../../components/CategorieButton';
+import './Home.css';
 
-export default class Search extends React.Component {
+export default class Home extends Component {
   constructor() {
     super();
     this.state = {
@@ -151,7 +151,7 @@ export default class Search extends React.Component {
   }
 }
 
-Search.propTypes = {
+Home.propTypes = {
   addToCart: PropTypes.func.isRequired,
   cartList: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
