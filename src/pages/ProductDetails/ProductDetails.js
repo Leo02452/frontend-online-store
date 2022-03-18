@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { getProductId } from '../services/api';
-import ProductForm from './ProductForm';
-import Reviews from './Reviews';
+import { getProductId } from '../../services/api';
+import ProductForm from '../../components/ProductForm';
+import Reviews from '../../components/Reviews';
 
-class ProductDetails extends React.Component {
+export default class ProductDetails extends Component {
   constructor() {
     super();
     this.state = {
@@ -56,7 +56,7 @@ class ProductDetails extends React.Component {
   }
 
   render() {
-    const { addToCart, cartList } = this.props;
+    const { handleAddToCart, cartList } = this.props;
     const { test, load, reviews } = this.state;
     const isFreeShipping = test.shipping && test.shipping.free_shipping;
     const count = 7;
@@ -78,9 +78,9 @@ class ProductDetails extends React.Component {
                 <button
                   data-testid="product-detail-add-to-cart"
                   type="button"
+                  onClick={ handleAddToCart }
                   name={ test.title }
                   value={ count }
-                  onClick={ addToCart }
 
                 >
                   Adicionar ao carrinho
@@ -113,8 +113,6 @@ ProductDetails.propTypes = {
       id: PropTypes.string.isRequired,
     }),
   }).isRequired,
-  addToCart: PropTypes.func.isRequired,
+  handleAddToCart: PropTypes.func.isRequired,
   cartList: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
-
-export default ProductDetails;

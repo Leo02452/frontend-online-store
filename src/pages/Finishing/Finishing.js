@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-class Finishing extends React.Component {
+export default class Finishing extends Component {
   render() {
     return (
       <div>
@@ -15,5 +15,3 @@ class Finishing extends React.Component {
     );
   }
 }
-
-export default Finishing;
