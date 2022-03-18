@@ -116,6 +116,7 @@ export default class Search extends React.Component {
                   data-testid="product-add-to-cart"
                   type="button"
                   value={ produto.title }
+                  name={ produto.available_quantity }
                   onClick={ addToCart }
                 >
                   Adicionar ao carrinho
