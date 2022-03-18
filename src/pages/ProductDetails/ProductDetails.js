@@ -59,6 +59,7 @@ export default class ProductDetails extends Component {
     const { handleAddToCart, cartList } = this.props;
     const { test, load, reviews } = this.state;
     const isFreeShipping = test.shipping && test.shipping.free_shipping;
+    const count = 7;
     return (
       <div>
         {
@@ -77,8 +78,9 @@ export default class ProductDetails extends Component {
                 <button
                   data-testid="product-detail-add-to-cart"
                   type="button"
-                  value={ test.title }
                   onClick={ handleAddToCart }
+                  name={ test.title }
+                  value={ count }
 
                 >
                   Adicionar ao carrinho

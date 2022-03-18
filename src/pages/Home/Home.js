@@ -99,8 +99,9 @@ export default class Home extends Component {
                 <button
                   data-testid="product-add-to-cart"
                   type="button"
-                  value={ product.title }
                   onClick={ handleAddToCart }
+                  value={ product.available_quantity }
+                  name={ product.title }
                 >
                   Adicionar ao carrinho
                 </button>
