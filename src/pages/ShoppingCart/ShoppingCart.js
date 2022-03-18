@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-class ShoppingCart extends React.Component {
+export default class ShoppingCart extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -101,5 +101,3 @@ class ShoppingCart extends React.Component {
 ShoppingCart.propTypes = {
   cartList: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
-
-export default ShoppingCart;

@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
-import CategorieButton from './CategorieButton';
-import './Search.css';
+import { getCategories, getProductsFromCategoryAndQuery } from '../../services/api';
+import CategorieButton from '../../components/CategorieButton';
+import './Home.css';
 
-export default class Search extends React.Component {
+export default class Home extends Component {
   constructor() {
     super();
     this.state = {
-      keyboard: '',
-      product: [],
+      search: '',
+      products: [],
       categories: [],
       loading: false,
       textInput: true,
@@ -31,41 +31,21 @@ export default class Search extends React.Component {
 
   handleChange = ({ target }) => {
     const { value } = target;
-    this.setState({ keyboard: value });
+    this.setState({ search: value });
   }
 
-  handleClick = async ({ target }) => {
-    const { keyboard } = this.state;
-    const request = await getProductsFromCategoryAndQuery(target.id, keyboard);
+  handleSearch = async ({ target }) => {
+    const { search } = this.state;
+    const request = await getProductsFromCategoryAndQuery(target.id, search);
     const { results } = request;
-    this.setState({ product: results }, () => {
+    this.setState({ products: results }, () => {
       this.setState({ textInput: false });
     });
   }
 
-  handleCategoryValue = ({ target }) => {
-    console.log(target.value);
-    this.setState({
-      keyboard: target.id,
-    });
-  }
-
-  condition = () => {
-    const { textInput } = this.state;
-    if (textInput) {
-      return (
-        <h2 data-testid="home-initial-message">
-          Digite
-          algum termo de pesquisa ou escolha uma categoria.
-        </h2>
-      );
-    }
-    return null;
-  }
-
   render() {
-    const { categories, loading, product, keyboard } = this.state;
-    const { addToCart, cartList } = this.props;
+    const { categories, loading, products, search, textInput } = this.state;
+    const { handleAddToCart, cartList } = this.props;
     return (
       <div>
         <form>
@@ -76,7 +56,7 @@ export default class Search extends React.Component {
           />
           <button
             type="button"
-            onClick={ this.handleClick }
+            onClick={ this.handleSearch }
             data-testid="query-button"
           >
             Buscar
@@ -89,35 +69,39 @@ export default class Search extends React.Component {
           <p data-testid="shopping-cart-size">{ cartList.length }</p>
           Carrinho
         </Link>
-        { this.condition() }
+        { textInput && (
+          <h2 data-testid="home-initial-message">
+            Digite algum termo de pesquisa ou escolha uma categoria.
+          </h2>
+        )}
         {
-          product.length > 0
-            ? product.map((produto, index) => (
-              <div key={ produto.id }>
+          products.length > 0
+            ? products.map((product, index) => (
+              <div key={ product.id }>
                 <Link
-                  to={ `/product/${produto.id}` }
+                  to={ `/product/${product.id}` }
                   key={ index }
                   data-testid="product-detail-link"
                 >
                   <figure data-testid="product">
                     <img
-                      id={ produto.id }
-                      src={ produto.thumbnail }
-                      alt={ produto.title }
+                      id={ product.id }
+                      src={ product.thumbnail }
+                      alt={ product.title }
                       role="presentation"
                     />
                   </figure>
-                  <p data-testid="product-detail-name">{ produto.title }</p>
-                  {produto.shipping.free_shipping
+                  <p data-testid="product-detail-name">{ product.title }</p>
+                  {product.shipping.free_shipping
                   && <p data-testid="free-shipping">Frete Grátis</p>}
-                  <p>{ `R$${produto.price}` }</p>
+                  <p>{ `R$${product.price}` }</p>
                 </Link>
                 <button
                   data-testid="product-add-to-cart"
                   type="button"
-                  value={ produto.available_quantity }
-                  name={ produto.title }
-                  onClick={ addToCart }
+                  onClick={ handleAddToCart }
+                  value={ product.available_quantity }
+                  name={ product.title }
                 >
                   Adicionar ao carrinho
                 </button>
@@ -127,10 +111,10 @@ export default class Search extends React.Component {
             : (
               <>
                 <Link
-                  to={ `/product/${keyboard}` }
+                  to={ `/product/${search}` }
                   data-testid="product-detail-link"
                 />
-                <p>Nenhum produto foi encontrado</p>
+                <p>Nenhum product foi encontrado</p>
               </>
             )
         }
@@ -142,7 +126,7 @@ export default class Search extends React.Component {
                   key={ categorie.id }
                   name={ categorie.name }
                   id={ categorie.id }
-                  handleClick={ this.handleClick }
+                  handleClick={ this.handleSearch }
                 />
               ))
           }
@@ -152,7 +136,7 @@ export default class Search extends React.Component {
   }
 }
 
-Search.propTypes = {
-  addToCart: PropTypes.func.isRequired,
+Home.propTypes = {
+  handleAddToCart: PropTypes.func.isRequired,
   cartList: PropTypes.arrayOf(PropTypes.any).isRequired,
 };

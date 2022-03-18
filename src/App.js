@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
-import Search from './components/Search';
-import ShoppingCart from './components/ShoppingCart';
-import ProductDetails from './components/ProductDetails';
-import Finishing from './components/Finishing';
+import Home from './pages/Home/Home';
+import ShoppingCart from './pages/ShoppingCart/ShoppingCart';
+import ProductDetails from './pages/ProductDetails/ProductDetails';
+import Finishing from './pages/Finishing/Finishing';
 
 export default class App extends Component {
   constructor() {
@@ -15,15 +15,11 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    const rec = JSON.parse(localStorage.getItem('qnt'));
-    if (!rec) {
-      this.setState({ cartList: [] });
-    } else {
-      this.setState({ cartList: rec });
-    }
+    const cart = JSON.parse(localStorage.getItem('cart'));
+    this.setState({ cartList: cart || [] });
   }
 
-  addToCart = ({ target }) => {
+  handleAddToCart = ({ target }) => {
     const title = target.name;
     const qnt = target.value;
     const obj = {
@@ -36,7 +32,7 @@ export default class App extends Component {
       cartList: [...prevState.cartList, obj],
     }), () => {
       const { cartList } = this.state;
-      localStorage.setItem('qnt', JSON.stringify(cartList));
+      localStorage.setItem('cart', JSON.stringify(cartList));
     });
   };
 
@@ -49,11 +45,12 @@ export default class App extends Component {
             <Switch>
               <Route
                 path="/product/:id"
-                render={ (props) => (<ProductDetails
-                  { ...props }
-                  cartList={ cartList }
-                  addToCart={ this.addToCart }
-                />) }
+                render={ (props) => (
+                  <ProductDetails
+                    { ...props }
+                    cartList={ cartList }
+                    handleAddToCart={ this.handleAddToCart }
+                  />) }
               />
               <Route
                 path="/shopping-cart"
@@ -67,9 +64,9 @@ export default class App extends Component {
                 path="/"
                 exact
                 render={ (props) => (
-                  <Search
+                  <Home
                     { ...props }
-                    addToCart={ this.addToCart }
+                    handleAddToCart={ this.handleAddToCart }
                     cartList={ cartList }
                   />) }
               />
